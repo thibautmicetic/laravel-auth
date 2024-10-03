@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Personne;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,21 +26,25 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . Client::class],
+            'pseudo' => ['required', 'string', 'max:25'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = Client::create([
-            'nom' => $request->name,
+        $user = User::create([
+            'name' => $request->name,
             'email' => $request->email,
-            'mot_de_passe' => Hash::make($request->password),
+            'pseudo' => $request->pseudo,
+            'password' => Hash::make($request->password),
         ]);
+
+        event(new Registered($user));
+
+        $user->roles()->attach(2);
 
         Personne::create([
             'name' => $request->name,
             'userId' => $user->id
         ]);
-
-        event(new Registered($user));
 
         Auth::login($user);
 
