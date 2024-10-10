@@ -23,6 +23,10 @@
                     <x-nav-link :href="route('roles')" :active="request()->routeIs('roles')">
                         {{ __('Roles') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('chat')" :active="request()->routeIs('chat')">
+                        {{ __('Messages') }}
+                    </x-nav-link>
                 </div>
             </div>
 

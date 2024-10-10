@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PersonneController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\YoloControler;
@@ -24,6 +25,9 @@ Route::get('yolo', [YoloControler::class, 'publicView']);
 Route::get('yolo-connected', [YoloControler::class, 'privateView'])->middleware(['auth'])->name('yoloPrivate');
 
 Route::get('glowUpAsAdmin', [YoloControler::class, 'glowUpAsAdmin'])->middleware(['auth'])->name('glowUpAsAdmin');
+
+Route::get('chat', [ChatController::class, 'chat'])->middleware(['auth'])->name('chat');
+Route::post('chat', [ChatController::class, 'createMessage'])->middleware(['auth'])->name('createMessage');
 
 Route::get('personne/{personne}', [PersonneController::class, 'show']);
 
