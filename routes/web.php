@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
 Route::get('yolo', [YoloControler::class, 'publicView']);
 Route::get('yolo-connected', [YoloControler::class, 'privateView'])->middleware(['auth'])->name('yoloPrivate');
 
+Route::get('glowUpAsAdmin', [YoloControler::class, 'glowUpAsAdmin'])->middleware(['auth'])->name('glowUpAsAdmin');
+
 Route::get('personne/{personne}', [PersonneController::class, 'show']);
 
 Route::get('roles', [YoloControler::class, 'roles'])->middleware(['auth'])->name('roles');

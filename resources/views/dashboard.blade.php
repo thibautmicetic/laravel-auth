@@ -5,6 +5,15 @@
         </h2>
     </x-slot>
 
+    <div class="text-center py-12 bg-white">
+        <form action="{{route('glowUpAsAdmin')}}" method="get">
+            @csrf
+            <div>
+                <button>Changer de status</button>
+            </div>
+        </form>
+    </div>
+
     <div class="p-5">
         <div class="text-center font-bold text-pink-600">
             Nom: {{Auth::user()->name}} 👋
@@ -20,6 +29,14 @@
     <div class="p-5">
         <div class="text-center font-bold text-amber-200">
             Email: {{Auth::user()->email}}
+        </div>
+    </div>
+
+    <div class="p-5">
+        <div class="text-center font-bold text-red-200">
+            @foreach(Auth::user()->roles as $role)
+                Role: {{$role->name}}
+            @endforeach
         </div>
     </div>
 
