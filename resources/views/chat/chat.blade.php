@@ -1,23 +1,22 @@
-<x-app-layout>
+<x-app-layout id="layout">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script>
-        function getMessages() {
-            fetch('/chat')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('messages').innerHTML = html;
-                });
-        }
-
-        setInterval(() => {
-            getMessages();
-        }, 15000);
-
+        // Permet d'ajouter le token CSRF à chaque requête AJAX,
+        // pour éviter les erreurs 419, spécifiques à Laravel.
         document.addEventListener('DOMContentLoaded', function () {
-            getMessages();
+            document.body.addEventListener('htmx:configRequest', (event) => {
+                event.detail.headers['X-CSRF-Token'] = '{{ csrf_token() }}';
+            })
         });
     </script>
+    <style>
+        div.htmx-swapping div {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+    </style>
     <div class="flex flex-col sm:justify-center items-center mt-10">
-        <form method="POST" action="{{ route('createMessage') }}">
+        <form hx-post="/chat" hx-target="#messages" hx-swap="" action="{{ route('createMessage') }}">
             @csrf
 
             <!-- Email Address -->
@@ -35,12 +34,9 @@
             </div>
         </form>
 
-        <div id="messages">
-            @foreach($messages as $message)
-                <p><span style="font-weight: bold">Personne: {{$message->user->name}}</span> |
-                    Contenu: {{$message->content}}</p><br>
-            @endforeach
-        </div>
+        <button id="messages" hx-trigger="every 2s" hx-get="messages">
+            Chargement des messages...
+        </button>
     </div>
 
 

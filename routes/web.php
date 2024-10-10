@@ -29,6 +29,8 @@ Route::get('glowUpAsAdmin', [YoloControler::class, 'glowUpAsAdmin'])->middleware
 Route::get('chat', [ChatController::class, 'chat'])->middleware(['auth'])->name('chat');
 Route::post('chat', [ChatController::class, 'createMessage'])->middleware(['auth'])->name('createMessage');
 
+Route::get('messages', [ChatController::class, 'messages'])->middleware(['auth'])->name('messages');
+
 Route::get('personne/{personne}', [PersonneController::class, 'show']);
 
 Route::get('roles', [YoloControler::class, 'roles'])->middleware(['auth'])->name('roles');

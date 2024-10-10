@@ -10,8 +10,14 @@ class ChatController extends Controller
 {
     public function chat()
     {
+
+        return view('chat/chat');
+    }
+
+    public function messages()
+    {
         $messages = Message::all();
-        return view('chat/chat', [
+        return view('chat/messages', [
             'messages' => $messages,
         ]);
     }
@@ -23,6 +29,6 @@ class ChatController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        return redirect(route('chat', absolute: false));
+        return redirect(route('messages', absolute: false));
     }
 }
